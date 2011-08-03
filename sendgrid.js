@@ -119,7 +119,7 @@ sendgrid.Headers = Headers = function(defaults) {
  * @api public
  */
 Headers.prototype.toString = function() {
-  return JSON.stringify(this.headders);
+  return JSON.stringify(this.headers);
 };
 
 /**
