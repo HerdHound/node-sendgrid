@@ -1,0 +1,125 @@
+# node-sendgrid: SendGrid SMTP API headers library
+
+version: 0.0.1
+
+Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>
+
+Licensed under MIT license (see
+[LICENSE](https://raw.github.com/HerdHound/node-sendgrid/master/LICENSE))
+
+node-sendgrid implements the standard SendGrid SMTP API headers for use with
+libraries like [Nodemailer](http://www.nodemailer.org/). It currently does not
+actually send emails. It is just used to generate the SMTP API headers.
+
+You can find the original API documentation on SendGrid SMTP API 
+[documentation page](http://docs.sendgrid.com/documentation/api/smtp-api/).
+node-sendgrid tries to follow the official API as close as possible.
+
+## Status
+
+This library has not yet been fully tested. File any issues you encounter in
+[issue tracker](https://github.com/HerdHound/node-sendgrid/issues).
+
+## Installation
+
+The easiest way to install node-sendgrid is to use [npm](http://npmjs.org/):
+
+    npm install node-sendgrid
+
+It has no external dependencies.
+
+## Usage example
+
+The headers API is implemented through Headers constructor:
+
+   var Headers = require('node-sendgrid').Headers;
+
+The constructor takes a single argument which sets up the defaults.
+
+    var recipients = ['test1@example.com', 'test2@example.com'];
+    var headers = new Headers({
+        to: recipients, 
+        sub: {email: recipients},
+        category: 'test'
+    });
+
+You can now add more headers using headers methods (documented further below):
+
+    headers.addFilterSetting('clicktrack', 'enable', 1)
+
+All defined headers can be accessed through the ``headers`` property of the
+headers object:
+
+    console.log(headers.headers);
+    // Outputs:
+    // { to: [ 'test1@example.com', 'test2@example.com' ],
+    //   sub: { email: [ 'test1@example.com', 'test2@example.com' ] },
+    //   category: 'test',
+    //   filters: { clicktrack: { settings: [Object] } } }
+
+The headers are prepared for usage as a single SMTP API header by calling the
+``toString()`` method. Here is an example using Nodemailer.
+
+    var mailer = require('nodemailer');
+    mailer.SMTP = config.email.sendgrid;
+    mailer.send_mail({
+        to: 'test1@example.com',
+        sender: 'me@mysite.com',
+        ...
+        headers: {'X-SMTPAPI': headers.toString()}
+    }, function(err, sent) {
+        console.log('Email was ' + (sent && 'sent' || 'not sent');
+    });
+
+The ``X-SMTPAPI`` header would look like this:
+
+    '{"to":["test1@example.com","test2@example.com"],
+    "sub":{"email":["test1@example.com","test2@example.com"]},
+    "category":"test","filters":{"clicktrack":{"settings":
+    {"enable":1}}}}'
+
+## Default headers
+
+As discussed above, default headers are set by passing parameters to the
+constructor. The parameters are:
+
+* __to__: _additional recipients._ This is used to send a single message to
+  multiple recipients.
+* __sub__: _substitution variables (sub vars)._ Email body may contain 
+  placeholders that can be substituted using sub vars. The placeholder looks
+  like ``<% myPlaceholder %>``. The sub vars are key-value pairs, where the
+  key corresponds to the name of the placeholder. If value is an array, it
+  needs to contain the same number of items as the number of recipients.
+* __unique__: _unique arguments._ Unique args are used for tracking purposes.
+  As with sub vars, unique args are key-value pairs, and val must contain the
+  same number of values as the number of recipients if it is an array.
+* __category__: _logging category._ The name of the category under which the
+  email will be logged.
+* __filters__: _filter settings._ The filter-setting pairs that match filter
+  name with a settings object.
+
+## Headers object methods
+
+Headers object has a few methods that allows you to fine-tune the headers
+definition once the object is created using the constructor:
+
+* __addTo(to)__: _set the ``to`` header._ ``to`` can be a string or an array
+  of strings containing recipient email addresses.
+* __addSubVal(key, val)__: _set the sub vars._ Sets a single ``key``-``val``
+  sub var pair.
+* __setUniqueArgs(args)__: _set unique args._ Sets key-value pairs of unique
+  args to ``args`` object. Note that this overrides the default set from in
+  the constructor.
+* __setCategory(category)__: _set the category name._ This overrides the
+  category name set in the constructor.
+* __addFilterSetting(filter, setting, val)__: _set a single filter setting._
+  Sets the setting value of a ``setting`` for the ``filter`` to ``val``.
+
+The headers object supports one more method ``toString()`` which returns the
+JSON string representation of the headers object.
+
+## Filter settings
+
+The list of filters and their settings can be found in the 
+[SendGrid documentation](http://docs.sendgrid.com/documentation/api/smtp-api/filter-settings/).
+
