@@ -15,11 +15,13 @@ var Headers;
  * PRIVATE UTILITY FUNCTIONS
  */
 
+// TODO: Still need a robust isArray check here and there
+
 function addTo(to, headers) {
   headers.to = headers.to || [];
   if (typeof to === 'string') {
     headers.to.push(to);
-  } else if (typeof to !== 'undefined' && to instanceof Array) {
+  } else {
     headers.to = to;
   }
 }
@@ -28,7 +30,7 @@ function addSubVal(key, val, headers) {
   headers.sub = headers.sub || {};
   if (typeof val === 'string') {
     headers.sub[key] = [val];
-  } else if (typeof val !== 'undefined' && val instanceof Array) {
+  } else {
     headers.sub[key] = val;
   }
 }
@@ -44,7 +46,7 @@ function addSubObj(sub, headers) {
 }
 
 function setUniqueArgs(obj, headers) {
-  if (typeof obj === 'object' && !(obj instanceof Array)) {
+  if (typeof obj === 'object') {
     headers.unique_args = obj;
   }
 }
