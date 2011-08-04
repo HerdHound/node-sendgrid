@@ -1,0 +1,29 @@
+{
+  "name": "node-sendgrid",
+  "description": "SendGrid SMTP API headers library",
+  "version": "0.0.2",
+  "homepage": "https://github.com/HerdHound/node-sendgrid",
+  "keywords": ["email", "smtp", "sendgrid"],
+  "author": "Branko Vukelic <branko@herdhound.com>",
+  "main": "sendgrid.js",
+  "bugs": {
+    "mail": "branko@herdhound.com",
+    "web": "https://github.com/HerdHound/node-sendgrid/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://HerdHound@github.com/HerdHound/node-sendgrid.git"
+  },
+  "engines": {
+    "node": ">= 0.4.1 < 0.5.0"
+  },
+  "dependencies": {
+    "underscore": ">= 1.0.0"
+  },
+  "licenses": [{
+    "type": "MIT",
+    "url": "https://github.com/HerdHound/node-sendgrid/raw/master/LICENSE"
+  }]
+}
+
+
