@@ -9,28 +9,27 @@
  */
 
 var sendgrid = exports;
+var _ = require('underscore');
 var Headers;
 
 /**
  * PRIVATE UTILITY FUNCTIONS
  */
 
-// TODO: Still need a robust isArray check here and there
-
 function addTo(to, headers) {
   headers.to = headers.to || [];
-  if (typeof to === 'string') {
+  if (_.isString(to)) {
     headers.to.push(to);
-  } else {
+  } else if (_.isArray(to)) {
     headers.to = to;
   }
 }
 
 function addSubVal(key, val, headers) {
   headers.sub = headers.sub || {};
-  if (typeof val === 'string') {
+  if (_.isString(val)) {
     headers.sub[key] = [val];
-  } else {
+  } else if (_.isArray(val)) {
     headers.sub[key] = val;
   }
 }
@@ -38,21 +37,15 @@ function addSubVal(key, val, headers) {
 function addSubObj(sub, headers) {
   headers.sub = headers.sub || {};
   // Shallow-copy properties from sub to headers.sub
-  for (var key in sub) {
-    if (sub.hasOwnProperty(key)) {
-      addSubVal(key, sub[key], headers);
-    }
-  }
+  _.extend(headers.sub, sub);
 }
 
 function setUniqueArgs(obj, headers) {
-  if (typeof obj === 'object') {
-    headers.unique_args = obj;
-  }
+  headers.unique_args = obj;
 }
 
 function setCategory(category, headers) {
-  if (typeof category === 'string') {
+  if (_.isString(category)) {
     headers.category = category;
   }
 }
@@ -65,11 +58,9 @@ function addFilterSetting(filter, setting, val, headers) {
 }
 
 function addFilterSettings(filter, settings, headers) {
-  for (var setting in settings) {
-    if (settings.hasOwnProperty(setting)) {
-      addFilterSettings(filter, setting, settings[setting], headers);
-    }
-  }
+  _.keys(settings).forEach(function(setting) {
+    addFilterSettings(filter, setting, settings[setting], headers);
+  });
 }
 
 /**
@@ -102,11 +93,9 @@ sendgrid.Headers = Headers = function(defaults) {
     setUniqueArgs(defaults.unique, this.headers);
     setCategory(defaults.category, this.headers);
     if (defaults.filters) {
-      for (var filter in defaults.filters) {
-        if (defaults.filters.hasOwnProperty(filter)) {
-          addFilterSettings(filter, defaults.filters[filter], this.headers);
-        }
-      }
+      _.keys(defaults.filters).forEach(function(filter) {
+        addFilterSettings(filter, defaults.filters[filter], this.headers);
+      });
     }
   }
 };
