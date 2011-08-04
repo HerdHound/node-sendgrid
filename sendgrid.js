@@ -58,7 +58,7 @@ function addFilterSetting(filter, setting, val, headers) {
 }
 
 function addFilterSettings(filter, settings, headers) {
-  _.keys(settings).forEach(function(setting) {
+  Object.keys(settings).forEach(function(setting) {
     addFilterSettings(filter, setting, settings[setting], headers);
   });
 }
@@ -93,7 +93,7 @@ sendgrid.Headers = Headers = function(defaults) {
     setUniqueArgs(defaults.unique, this.headers);
     setCategory(defaults.category, this.headers);
     if (defaults.filters) {
-      _.keys(defaults.filters).forEach(function(filter) {
+      Object.keys(defaults.filters).forEach(function(filter) {
         addFilterSettings(filter, defaults.filters[filter], this.headers);
       });
     }
