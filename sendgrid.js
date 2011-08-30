@@ -17,6 +17,10 @@ var Headers;
  */
 
 function addTo(to, headers) {
+  if (!to) {
+    return;
+  }
+
   headers.to = headers.to || [];
   if (_.isString(to)) {
     headers.to.push(to);
@@ -26,6 +30,10 @@ function addTo(to, headers) {
 }
 
 function addSubVal(key, val, headers) {
+  if (!key || !val) {
+    return;
+  }
+
   headers.sub = headers.sub || {};
   if (_.isString(val)) {
     headers.sub[key] = [val];
@@ -35,22 +43,38 @@ function addSubVal(key, val, headers) {
 }
 
 function addSubObj(sub, headers) {
+  if (!sub) {
+    return;
+  }
+
   headers.sub = headers.sub || {};
   // Shallow-copy properties from sub to headers.sub
   _.extend(headers.sub, sub);
 }
 
 function setUniqueArgs(obj, headers) {
+  if (!obj) {
+    return;
+  }
+
   headers.unique_args = obj;
 }
 
 function setCategory(category, headers) {
+  if (!category) {
+    return;
+  }
+
   if (_.isString(category)) {
     headers.category = category;
   }
 }
 
 function addFilterSetting(filter, setting, val, headers) {
+  if (!filter || !setting || !val) {
+    return;
+  }
+
   headers.filters = headers.filters || {};
   headers.filters[filter] = headers.filters[filter] || {};
   headers.filters[filter].settings = headers.filters[filter].settings || {};
@@ -58,6 +82,10 @@ function addFilterSetting(filter, setting, val, headers) {
 }
 
 function addFilterSettings(filter, settings, headers) {
+  if (!filter || !settings) {
+    return;
+  }
+
   Object.keys(settings).forEach(function(setting) {
     addFilterSettings(filter, setting, settings[setting], headers);
   });
