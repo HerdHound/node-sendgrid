@@ -17,7 +17,7 @@ var Headers;
  */
 
 function addTo(to, headers) {
-  if (!to) {
+  if (!to || !to.length) {
     return;
   }
 
