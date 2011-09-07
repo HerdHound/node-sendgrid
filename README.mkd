@@ -1,6 +1,6 @@
 # node-sendgrid: SendGrid SMTP API headers library
 
-version: 0.0.3
+version: 0.0.4
 
 Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>
 

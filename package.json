@@ -1,7 +1,7 @@
 {
   "name": "node-sendgrid",
   "description": "SendGrid SMTP API headers library",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "homepage": "https://github.com/HerdHound/node-sendgrid",
   "keywords": ["email", "smtp", "sendgrid"],
   "author": "Branko Vukelic <branko@herdhound.com>",
