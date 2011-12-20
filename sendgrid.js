@@ -2,9 +2,11 @@
  * node-sendgrid
  * SengGrid SMTP API headers library
  * 
- * Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>
+ * Copyright (c)2011, by Monwara LLC / Branko Vukelic
  * All rights reserved.
  * Released under MIT license (see LICENSE)
+ *
+ * @author Monwara LLC / Branko Vukelic <branko@herdhound.com>
  *
  */
 
